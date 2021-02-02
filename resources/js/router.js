@@ -6,6 +6,8 @@ import BackHome from './pages/backend/home.vue'
 
 //tags
 import tagIndex from './pages/backend/tags/index.vue'
+//tags
+import categoryIndex from './pages/backend/category/index.vue'
 
 
 
@@ -21,6 +23,11 @@ const routes = new VueRouter({
             path: '/dashboard/tags',
             component: tagIndex,
             name: 'tags',
+        },
+        {
+            path: '/dashboard/category',
+            component: categoryIndex,
+            name: 'category',
         },
         
     ]
