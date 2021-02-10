@@ -1,6 +1,7 @@
 require('./bootstrap');
 import Vue from 'vue'
-import routers from './router'
+import router from './router'
+import store from './store'
 
 // toastr notification
 import CxltToastr from 'cxlt-vue2-toastr'
@@ -39,5 +40,6 @@ Vue.mixin(Common)
 
 const app = new Vue({
     el: '#backend-content',
-    router: routers,
+    router,
+    store
 });

@@ -9,6 +9,11 @@ import tagIndex from './pages/backend/tags/index.vue'
 //tags
 import categoryIndex from './pages/backend/category/index.vue'
 
+//users
+import userIndex from './pages/backend/users/index.vue'
+
+
+
 
 
 const routes = new VueRouter({
@@ -28,6 +33,11 @@ const routes = new VueRouter({
             path: '/dashboard/category',
             component: categoryIndex,
             name: 'category',
+        },
+        {
+            path: '/dashboard/users',
+            component: userIndex,
+            name: 'users',
         },
         
     ]
