@@ -14,8 +14,6 @@ import userIndex from './pages/backend/users/index.vue'
 
 
 
-
-
 const routes = new VueRouter({
     mode: 'history',
     routes: [

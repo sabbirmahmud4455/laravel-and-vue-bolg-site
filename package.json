@@ -18,9 +18,9 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "jquery": "^3.5.1",
         "bootstrap": "^4.6.0",
         "cxlt-vue2-toastr": "^1.1.1",
-        "jquery": "^3.5.1",
         "vform": "^1.0.1",
         "vue": "^2.6.12",
         "vue-router": "^3.4.9",

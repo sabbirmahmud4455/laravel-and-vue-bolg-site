@@ -149,7 +149,7 @@
                             <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                         </div>
                         <div class="info">
-                            <a href="#" class="d-block">Alexander Pierce</a>
+                            <a href="#" class="d-block">{{this.user.full_name}}</a>
                         </div>
                     </div>
 
@@ -193,6 +193,12 @@
                                         Users
                                     </p>
                                 </router-link>
+                            </li>
+                            <li class="nav-item">
+                                <form  @submit.prevent="logout()">
+                                    
+                                <input class="btn btn-block btn-danger" type="submit" value="log out">
+                                </form>
                             </li>
                         </ul>
                     </nav>
@@ -238,9 +244,22 @@
 </template>
 <script>
     export default {
+        props: ['user'],
+
+
+        methods: {
+            logout(){
+                 axios.post('/logout').then(response => {
+                    window.location.href = "/login"
+          })
+            }
+            
+        },
 
     }
+    
 
+    
 </script>
 <style lang="">
 

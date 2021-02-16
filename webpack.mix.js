@@ -16,8 +16,10 @@ const mix = require('laravel-mix');
 
 //backend
 mix.js([
-    //'public/backend/plugins/jquery/jquery.min.js',
+    'public/backend/plugins/jquery/jquery.min.js',
     'resources/js/app.js',
+    
+    
     //'public/backend/plugins/bootstrap/js/bootstrap.bundle.min.js',
     //'public/backend/dist/js/adminlte.min.js',
 ], 'public/app.js');

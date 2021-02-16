@@ -14,10 +14,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('backend.home');
+    return view('welcome');
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    // Route::view('home', 'home')->name('home');
+    Route::get('/dashboard/{any}', function(){
+        return view('backend.home');
+    })->where('any', '.*')->name('dashboard');
+    
+});
+Route::middleware(['guest'])->group(function () {
+    
+    Route::view('/login', 'login')->name('login_page');
+    
 });
 
 
-Route::get('/dashboard/{any}', function(){
-    return view('backend.home');
-})->where('any', '.*');
+

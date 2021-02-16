@@ -23,12 +23,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{asset('backend')}}/dist/css/custom.css">
 </head>
 <body class="hold-transition sidebar-mini">
-
   
   <div id="backend-content">
-            <backend-main></backend-main>
+    
+    @auth
+        <backend-main :user="{{auth()->user()}}"></backend-main>
+    @endauth
             
-        </div>
+  </div>
 
 
 
@@ -36,12 +38,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <!-- REQUIRED SCRIPTS -->
 
-<!-- jQuery -->
-<script src="{{asset('backend')}}/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="{{asset('backend')}}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
+<script src="{{asset('backend')}}/plugins/jquery/jquery.min.js"></script>
 <script src="{{asset('backend')}}/dist/js/adminlte.min.js"></script>
 <script src="{{asset('app.js')}}"></script>
+
 </body>
 </html>

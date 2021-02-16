@@ -106,10 +106,10 @@
                     <div class="form-group">
                       <label for="user_role">User Role</label>
                       <select v-model="userForm.role" class="form-control" name="user_role" id="user_role">
-                        <option>Admin</option>
-                        <option>Editor</option>
-                        <option>Manager</option>
-                        <option>Subscriber</option>
+                        <option  value="1">Admin</option>
+                        <option  value="2">Editor</option>
+                        <option  value="3">Manager</option>
+                        <option  value="0">Subscriber</option>
                       </select>
                     </div>
                     <div class="form-group mb-0">
@@ -146,10 +146,10 @@
                     <div class="form-group">
                       <label for="user_role">User Role</label>
                       <select v-model="editdata.role" class="form-control" name="user_role" id="user_role">
-                        <option>Admin</option>
-                        <option>Editor</option>
-                        <option>Manager</option>
-                        <option>Subscriber</option>
+                        <option value="1">Admin</option>
+                        <option value="2">Editor</option>
+                        <option value="3">Manager</option>
+                        <option value="0">Subscriber</option>
                       </select>
                     </div>
                     <div  class="form-group mb-0">
@@ -193,7 +193,7 @@ export default {
         userForm: new Form({
           full_name: '',
           email: '',
-          role: 'Subscriber',
+          role: '0',
           password: '',
       }),
         editdata: new Form({
