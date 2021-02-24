@@ -5,15 +5,24 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        counter: 1000
+        user:null ,
+        userPermission: null
+
     },
     getters : {
-        
+        getUser(state){
+           return state.user
+        },
+        getPermission(state){
+           return state.userPermission
+        }
     },
     mutations: {
-       
-    },
-    actions: {
-       
+       setUser(state , data){
+          state.user= data
+       },
+       setPermission(state, data){
+        state.userPermission= JSON.parse(data.permission)
+       }
     }
 })

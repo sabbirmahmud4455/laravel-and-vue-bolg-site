@@ -12,6 +12,10 @@ import categoryIndex from './pages/backend/category/index.vue'
 //users
 import userIndex from './pages/backend/users/index.vue'
 
+//role manage
+import roleIndex from './pages/backend/role/index.vue'
+import rolePermissions from './pages/backend/role/rolepermissions.vue'
+
 
 
 const routes = new VueRouter({
@@ -36,6 +40,16 @@ const routes = new VueRouter({
             path: '/dashboard/users',
             component: userIndex,
             name: 'users',
+        },
+        {
+            path: '/dashboard/role',
+            component: roleIndex,
+            name: 'roles',
+        },
+        {
+            path: '/dashboard/role-permissions',
+            component: rolePermissions,
+            name: 'rolesPermissions',
         },
         
     ]

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -14,9 +15,10 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $users= User::orderBy('id', 'desc')->get();
-        return response()->json($users);
+    {   $role= Role::all();
+        $users= User::with(["role"])->orderBy('id', 'desc')->get();
+        return response()->json( ['users'=>$users, 'roles'=> $role]);
+
     }
 
     /**
@@ -48,7 +50,7 @@ class UserController extends Controller
         User::insert([
             'full_name'=> $request->full_name,
             'email'=> $request->email,
-            'user_type'=> $request->role,
+            'role_id'=> $request->role,
             'password'=> bcrypt($request->password),
             'status'=> 0,
             'created_at'=> Carbon::now()

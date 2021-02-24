@@ -18,9 +18,9 @@ class User_type
     public function handle($request, Closure $next)
     {
     
-        if (Auth::user() && !Auth::user()->user_type == 0) {
+        if (Auth::user() && !Auth::user()->role_id == 0) {
              return $next($request);
-        } elseif(Auth::user() && Auth::user()->user_type == 0){
+        } elseif(Auth::user() && Auth::user()->role_id == 0){
             return redirect('/');
         }
 

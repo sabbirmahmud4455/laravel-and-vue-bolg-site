@@ -1,14 +1,19 @@
 <template lang="">
     <div>
+
+        
+
         <!-- Content Wrapper. Contains page content -->
 
-        <div class="content-wrapper">
+
+
+        <div v-if="getPermission.find( ({ permissionName }) => permissionName === 'Category' ).read==true" class="content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-
+                            
                             <h1 class="m-0 text-dark">Categories</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
@@ -49,15 +54,13 @@
                                                 <td>{{index+1}}</td>
                                                 <td>{{category.name}}</td>
                                                 <td>
-                                                    <button v-on:click="editcategory(category.id, index)"
+                                                    <button  v-if="getPermission.find( ({ permissionName }) => permissionName === 'Category').update==true" v-on:click="editcategory(category.id, index)"
                                                         class="btn btn-primary"> <i class="fas fa-pen    "></i></button>
-                                                    <button  v-on:click="delete_category(category, index) "  class="btn btn-danger"> <i class="fas fa-trash    "></i> </button>
-                                                    <!-- <button type="button" class="btn btn-danger"
-                                                        v-on:click="delete_category(category, index)"
-                                                         data-toggle="modal"
-                                                        data-target="#deleteModal">
-                                                        <i class="fas fa-trash    "></i>
-                                                    </button> -->
+                                                    <button v-else
+                                                        class="btn muted"> <i class="fas fa-pen    "></i></button>
+                                                    <button  v-if="getPermission.find( ({ permissionName }) => permissionName === 'Category').delete==true"   v-on:click="delete_category(category, index) "  class="btn btn-danger"> <i class="fas fa-trash    "></i> </button>
+                                                    <button v-else class="btn muted"> <i class="fas fa-trash    "></i> </button>
+                                                    
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -82,18 +85,18 @@
 
                         <div class="col-lg-4">
                             <div class="card card-primary">
-                                <div v-if="this.add_form==true" class="card-header">
+                                <div v-if="getPermission.find( ({ permissionName }) => permissionName === 'Category').write==true && this.add_form==true" class="card-header">
 
                                     <h3 class="card-title">Add Category</h3>
                                 </div>
-                                <div v-else class="card-header d-flex">
+                                <div v-if="this.add_form==false" class="card-header d-flex">
                                     <h3 class="card-title">Update Category</h3>
-                                    <button class="btn btn-info ml-auto py-0" v-on:click="show_add_form()">Add
+                                    <button v-if="getPermission.find( ({ permissionName }) => permissionName === 'Category').write==true" class="btn btn-info ml-auto py-0" v-on:click="show_add_form()">Add
                                         Category</button>
                                 </div>
                                 <!-- /.card-header -->
                                 <!-- form start -->
-                                <div v-if="this.add_form==true">
+                                <div v-if="getPermission.find( ({ permissionName }) => permissionName === 'Category').write==true && this.add_form==true">
                                     <form @submit.prevent="addcategory()" @keydown="categoryForm.onKeydown($event)">
                                         <div class="card-body">
                                             <div class="form-group mb-0">
@@ -112,7 +115,7 @@
                                     </form>
                                 </div>
 
-                                <div v-else>
+                                <div v-if="getPermission.find( ({ permissionName }) => permissionName === 'Category').update==true && this.add_form==false">
                                     <form @submit.prevent="update_category()" @keydown="editdata.onKeydown($event)">
                                         <div class="card-body">
                                             <input type="hidden" v-model="editdata.id" name="id">
@@ -155,6 +158,7 @@
         Form
     } from 'vform'
     import comDleteModal from '../../../component/backend/etc/deltelemodal'
+    import {mapGetters} from 'vuex'
     export default {
         data() {
             return {
@@ -173,6 +177,10 @@
 
             }
         },
+        computed: {
+            
+            ...mapGetters(["getUser", "getPermission"])
+        },
         methods: {
 
             getcategory() {
@@ -182,10 +190,8 @@
             },
             addcategory() {
 
-
                 this.categoryForm.post('/api/dashboard/category')
                     .then(response => {
-
 
                         this.getcategory();
                         this.categoryForm.name = '';

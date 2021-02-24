@@ -149,7 +149,7 @@
                             <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                         </div>
                         <div class="info">
-                            <a href="#" class="d-block">{{this.user.full_name}}</a>
+                            <a href="#" class="d-block">{{getUser.full_name}}</a>
                         </div>
                     </div>
 
@@ -170,7 +170,7 @@
                                     </p>
                                 </router-link>
                             </li>
-                            <li class="nav-item">
+                            <li v-if="getPermission.find( ({ permissionName }) => permissionName === 'Tag').read==true" class="nav-item">
                                 <router-link :to="{name:'tags'}" class="nav-link">
                                     <i class="nav-icon fas fa-th"></i>
                                     <p>
@@ -178,7 +178,7 @@
                                     </p>
                                 </router-link>
                             </li>
-                            <li class="nav-item">
+                            <li v-if="getPermission.find( ({ permissionName }) => permissionName === 'Category').read==true" class="nav-item">
                                 <router-link :to="{name:'category'}" enter-active-class="active" class="nav-link">
                                     <i class="nav-icon fas fa-th"></i>
                                     <p>
@@ -186,11 +186,28 @@
                                     </p>
                                 </router-link>
                             </li>
-                            <li class="nav-item">
+                            <li v-if="getPermission.find( ({ permissionName }) => permissionName === 'User').read==true" class="nav-item">
                                 <router-link :to="{name:'users'}" class="nav-link">
                                     <i class="fas fa-user nav-icon "></i>
                                     <p>
                                         Users
+                                    </p>
+                                </router-link>
+                            </li>
+                            <li v-if="getPermission.find( ({ permissionName }) => permissionName === 'User Role').read==true" class="nav-item">
+                                <router-link :to="{name:'roles'}" class="nav-link">
+                                    <i class="fas fa-user nav-icon "></i>
+                                    <p>
+                                        Role Management
+                                    </p>
+                                </router-link>
+                                
+                            </li>
+                            <li class="nav-item">
+                                <router-link :to="{name:'rolesPermissions'}" class="nav-link">
+                                    <i class="fas fa-user nav-icon "></i>
+                                    <p>
+                                        Role Permissions
                                     </p>
                                 </router-link>
                             </li>
@@ -233,7 +250,7 @@
             <footer class="main-footer">
                 <!-- To the right -->
                 <div class="float-right d-none d-sm-inline">
-                    Anything you want
+                    Anything you want 
                 </div>
                 <!-- Default to the left -->
                 <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights
@@ -243,8 +260,9 @@
     </div>
 </template>
 <script>
+    import {mapGetters} from 'vuex'
     export default {
-        props: ['user'],
+        props: ['user' , 'permission'],
 
 
         methods: {
@@ -254,6 +272,14 @@
           })
             }
             
+        },
+        computed: {
+            ...mapGetters(["getUser", "getPermission"])
+        },
+        created() {
+            this.$store.commit('setUser', this.user)
+            this.$store.commit('setPermission', this.permission)
+
         },
 
     }

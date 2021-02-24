@@ -27,7 +27,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <div id="backend-content">
     
     @auth
-        <backend-main :user="{{auth()->user()}}"></backend-main>
+        <backend-main :user="{{auth()->user()}}" :permission="{{auth()->user()->role}}"></backend-main>
     @endauth
             
   </div>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -24,5 +25,6 @@ use Illuminate\Support\Facades\Route;
 Route::resource('/dashboard/tag', TagController::class);
 Route::resource('/dashboard/category', CategoryController::class);
 Route::resource('/dashboard/user', UserController::class);
-
-
+Route::resource('/dashboard/role', RoleController::class);
+// role assigns
+Route::put('/dashboard/role_assigns', [RoleController::class, 'role_assigns' ]);

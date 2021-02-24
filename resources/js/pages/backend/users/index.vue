@@ -3,7 +3,7 @@
     <div> 
          <!-- Content Wrapper. Contains page content -->
       
-          <div class="content-wrapper">
+          <div v-if="getPermission.find( ({ permissionName }) => permissionName === 'User' ).read==true" class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -51,11 +51,15 @@
                       <td>{{index+1}}</td>
                       <td>{{user.full_name}}</td>
                       <td>{{user.email}}</td>
-                      <td>{{user.user_type}}</td>
-                      <td>{{user.status}}</td>
+                      <td><span v-if="user.role">{{user.role.role_name}}</span>  <span v-else>User</span></td>
+                      
+                      
+                      <td><span v-if="user.status==0">Inactive </span>  <span v-else>Active</span> </td>
                       <td>
-                        <button v-on:click="edituser(user.id, index)"  class="btn btn-primary"> <i class="fas fa-pen    "></i></button>
-                        <button v-on:click="delete_user(user)" class="btn btn-danger"> <i class="fas fa-trash    "></i></button>
+                        <button v-if="getPermission.find( ({ permissionName }) => permissionName === 'User').update==true" v-on:click="edituser(user.id, index)"  class="btn btn-primary"> <i class="fas fa-pen    "></i></button>
+                        <button v-else   class="btn muted"> <i class="fas fa-pen    "></i></button>
+                        <button  v-if="getPermission.find( ({ permissionName }) => permissionName === 'User').delete==true" v-on:click="delete_user(user)" class="btn btn-danger"> <i class="fas fa-trash    "></i></button>
+                        <button v-else class="btn muted"> <i class="fas fa-trash    "></i> </button>
                       </td>
                     </tr>
                   </tbody>
@@ -80,17 +84,17 @@
           
           <div class="col-lg-4">
               <div class="card card-primary">
-              <div v-if="this.add_form==true" class="card-header">
+              <div v-if="getPermission.find( ({ permissionName }) => permissionName === 'User').write==true && this.add_form==true" class="card-header">
             
                 <h3 class="card-title">Add user</h3>
               </div>
-              <div v-else class="card-header d-flex">
+              <div v-if="this.add_form==false" class="card-header d-flex">
                 <h3 class="card-title">Update user</h3>
-                <button class="btn btn-info ml-auto py-0" v-on:click="show_add_form()">Add user</button>
+                <button v-if="getPermission.find( ({ permissionName }) => permissionName === 'User').write==true" class="btn btn-info ml-auto py-0" v-on:click="show_add_form()">Add user</button>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <div v-if="this.add_form==true">
+              <div v-if="getPermission.find( ({ permissionName }) => permissionName === 'User').write==true && this.add_form==true">
                 <form   @submit.prevent="adduser()" @keydown="userForm.onKeydown($event)">
                   <div class="card-body">
                     <div class="form-group mb-0">
@@ -106,10 +110,10 @@
                     <div class="form-group">
                       <label for="user_role">User Role</label>
                       <select v-model="userForm.role" class="form-control" name="user_role" id="user_role">
-                        <option  value="1">Admin</option>
-                        <option  value="2">Editor</option>
+                        <option v-if="roles.length" v-for="(role, index) in roles" :key="index" :value="role.id">{{role.role_name}}</option>
+                        <!-- <option  value="2">Editor</option>
                         <option  value="3">Manager</option>
-                        <option  value="0">Subscriber</option>
+                        <option  value="0">Subscriber</option> -->
                       </select>
                     </div>
                     <div class="form-group mb-0">
@@ -127,7 +131,7 @@
                 </form>
               </div>
 
-              <div v-else >
+              <div  v-if="getPermission.find( ({ permissionName }) => permissionName === 'User').update==true && this.add_form==false">
                 <form @submit.prevent="update_user()" @keydown="editdata.onKeydown($event)">
                   <div class="card-body">
                     <input type="hidden" v-model="editdata.id" name="id">
@@ -177,23 +181,21 @@
   </div>
 
 
-
-
-
-
         <!-- /.content-wrapper -->
     </div>
 </template>
 <script>
 import { Form } from 'vform'
+import {mapGetters} from 'vuex'
 export default {
     data() {
       return {
         users:[],
+        roles:[],
         userForm: new Form({
           full_name: '',
           email: '',
-          role: '0',
+          role: '1',
           password: '',
       }),
         editdata: new Form({
@@ -209,12 +211,18 @@ export default {
 
       }
     },
+    computed: {
+            
+            ...mapGetters(["getUser", "getPermission"])
+        },
     methods: {
 
       
        getuser() {
           axios.get('/api/dashboard/user').then(response => {
-              this.users = response.data;
+              this.users = response.data.users;
+              this.roles = response.data.roles;
+              
           })
        },
       adduser(){
@@ -249,8 +257,6 @@ export default {
                   })
                 }
             })
-
-        
       },
       edituser(id , index){
         this.add_form=false
